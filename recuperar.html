@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Recuperar Contraseña</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-auth">
+
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <div class="logo-icon">A</div>
+                    <span class="logo-text">Banco Acme</span>
+                </div>
+                <p class="auth-subtitle">Recuperar contraseña</p>
+            </div>
+
+            <!-- Paso 1: Verificar identidad -->
+            <div id="formVerificar">
+                <div class="form-group">
+                    <label for="recTipoId">Tipo de Identificación</label>
+                    <select id="recTipoId" required>
+                        <option value="">Seleccione...</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="TI">Tarjeta de Identidad</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="PP">Pasaporte</option>
+                    </select>
+                    <span class="error-msg" id="errRecTipoId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="recNumId">Número de Identificación</label>
+                    <input type="text" id="recNumId" placeholder="Ingrese su número">
+                    <span class="error-msg" id="errRecNumId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="recEmail">Correo Electrónico</label>
+                    <input type="email" id="recEmail" placeholder="correo@ejemplo.com">
+                    <span class="error-msg" id="errRecEmail"></span>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">Cancelar</button>
+                    <button class="btn btn-primary" onclick="verificarIdentidad()">Verificar</button>
+                </div>
+
+                <div id="mensajeVerificar" class="alert alert-error" style="display:none;"></div>
+            </div>
+
+            <!-- Paso 2: Nueva contraseña (oculto por defecto) -->
+            <div id="formNuevaPass" style="display:none;">
+                <p class="info-text">Identidad verificada. Ingrese su nueva contraseña.</p>
+
+                <div class="form-group">
+                    <label for="nuevaPass">Nueva Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="nuevaPass" placeholder="Mínimo 8 caracteres">
+                        <button type="button" class="toggle-pass" onclick="togglePassword('nuevaPass', this)">👁</button>
+                    </div>
+                    <span class="error-msg" id="errNuevaPass"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmarNuevaPass">Confirmar Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmarNuevaPass" placeholder="Repita la contraseña">
+                        <button type="button" class="toggle-pass" onclick="togglePassword('confirmarNuevaPass', this)">👁</button>
+                    </div>
+                    <span class="error-msg" id="errConfirmarNuevaPass"></span>
+                </div>
+
+                <button class="btn btn-primary" onclick="cambiarContrasena()">Cambiar Contraseña</button>
+
+                <div id="mensajeCambio" class="alert" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/recuperar.js"></script>
+</body>
+</html>

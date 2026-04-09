@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Registro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-auth">
+
+    <div class="auth-container">
+        <div class="auth-card auth-card--wide">
+            <div class="auth-header">
+                <div class="logo">
+                    <div class="logo-icon">A</div>
+                    <span class="logo-text">Banco Acme</span>
+                </div>
+                <p class="auth-subtitle">Crear cuenta bancaria</p>
+            </div>
+
+            <!-- Formulario de registro -->
+            <div id="registroForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="regTipoId">Tipo de Identificación</label>
+                        <select id="regTipoId" required>
+                            <option value="">Seleccione...</option>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="TI">Tarjeta de Identidad</option>
+                            <option value="CE">Cédula de Extranjería</option>
+                            <option value="PP">Pasaporte</option>
+                        </select>
+                        <span class="error-msg" id="errRegTipoId"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regNumId">Número de Identificación</label>
+                        <input type="text" id="regNumId" placeholder="Ej: 1234567890">
+                        <span class="error-msg" id="errRegNumId"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regNombres">Nombres</label>
+                        <input type="text" id="regNombres" placeholder="Ingrese sus nombres">
+                        <span class="error-msg" id="errRegNombres"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regApellidos">Apellidos</label>
+                        <input type="text" id="regApellidos" placeholder="Ingrese sus apellidos">
+                        <span class="error-msg" id="errRegApellidos"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regGenero">Género</label>
+                        <select id="regGenero">
+                            <option value="">Seleccione...</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                        <span class="error-msg" id="errRegGenero"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regTelefono">Teléfono</label>
+                        <input type="tel" id="regTelefono" placeholder="Ej: 3001234567">
+                        <span class="error-msg" id="errRegTelefono"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Correo Electrónico</label>
+                        <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
+                        <span class="error-msg" id="errRegEmail"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regDireccion">Dirección</label>
+                        <input type="text" id="regDireccion" placeholder="Calle 123 #45-67">
+                        <span class="error-msg" id="errRegDireccion"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regCiudad">Ciudad de Residencia</label>
+                        <input type="text" id="regCiudad" placeholder="Ej: Bogotá">
+                        <span class="error-msg" id="errRegCiudad"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres">
+                            <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">👁</button>
+                        </div>
+                        <span class="error-msg" id="errRegPassword"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPasswordConfirm">Confirmar Contraseña</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="regPasswordConfirm" placeholder="Repita la contraseña">
+                            <button type="button" class="toggle-pass" onclick="togglePassword('regPasswordConfirm', this)">👁</button>
+                        </div>
+                        <span class="error-msg" id="errRegPasswordConfirm"></span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="window.location.href='index.html'">Cancelar</button>
+                    <button class="btn btn-primary" onclick="registrarUsuario()">Crear Cuenta</button>
+                </div>
+
+                <div id="mensajeRegistro" class="alert" style="display:none;"></div>
+            </div>
+
+            <!-- Resumen de registro exitoso (oculto por defecto) -->
+            <div id="resumenRegistro" style="display:none;">
+                <div class="resumen-card">
+                    <div class="resumen-icon">✅</div>
+                    <h2>¡Cuenta creada exitosamente!</h2>
+                    <div class="resumen-datos">
+                        <p><strong>Número de cuenta:</strong> <span id="resNumeroCuenta"></span></p>
+                        <p><strong>Titular:</strong> <span id="resTitular"></span></p>
+                        <p><strong>Tipo ID:</strong> <span id="resTipoId"></span></p>
+                        <p><strong>Número ID:</strong> <span id="resNumId"></span></p>
+                        <p><strong>Fecha de creación:</strong> <span id="resFechaCreacion"></span></p>
+                    </div>
+                    <a href="index.html" class="btn btn-primary">Ir a Iniciar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/registro.js"></script>
+</body>
+</html>

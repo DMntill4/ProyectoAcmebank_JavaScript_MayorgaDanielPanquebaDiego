@@ -1,0 +1,850 @@
+/* ==============================
+   VARIABLES CSS (Paleta bancaria)
+   ============================== */
+:root {
+    --azul-oscuro: #0a1628;
+    --azul-primario: #1a56db;
+    --azul-hover: #1648b8;
+    --azul-claro: #e8f0fe;
+    --verde: #16a34a;
+    --rojo: #dc2626;
+    --rojo-claro: #fef2f2;
+    --gris-50: #f8fafc;
+    --gris-100: #f1f5f9;
+    --gris-200: #e2e8f0;
+    --gris-300: #cbd5e1;
+    --gris-400: #94a3b8;
+    --gris-600: #475569;
+    --gris-700: #334155;
+    --gris-800: #1e293b;
+    --gris-900: #0f172a;
+    --blanco: #ffffff;
+    --sombra: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    --sombra-lg: 0 4px 24px rgba(0,0,0,0.1);
+    --radio: 12px;
+    --radio-sm: 8px;
+    --transicion: 0.2s ease;
+}
+
+/* ==============================
+   RESET Y BASE
+   ============================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gris-50);
+    color: var(--gris-800);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: var(--gris-900);
+}
+
+/* ==============================
+   LOGO
+   ============================== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--azul-primario), #3b82f6);
+    color: var(--blanco);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.logo-icon--sm {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+}
+
+.logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--gris-900);
+}
+
+/* ==============================
+   PÁGINAS DE AUTENTICACIÓN
+   ============================== */
+.page-auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(145deg, var(--azul-oscuro) 0%, #162544 50%, #1a3a6b 100%);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 440px;
+    animation: fadeIn 0.4s ease;
+}
+
+.auth-card {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 40px 32px;
+    box-shadow: var(--sombra-lg);
+}
+
+.auth-card--wide {
+    max-width: 720px;
+}
+
+.auth-container:has(.auth-card--wide) {
+    max-width: 720px;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-header .logo {
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.auth-subtitle {
+    color: var(--gris-400);
+    font-size: 0.95rem;
+}
+
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 0.88rem;
+}
+
+.auth-links a {
+    color: var(--azul-primario);
+    text-decoration: none;
+    transition: color var(--transicion);
+}
+
+.auth-links a:hover {
+    color: var(--azul-hover);
+    text-decoration: underline;
+}
+
+/* ==============================
+   FORMULARIOS
+   ============================== */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--gris-700);
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gris-200);
+    border-radius: var(--radio-sm);
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--gris-800);
+    background: var(--blanco);
+    transition: border-color var(--transicion), box-shadow var(--transicion);
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--azul-primario);
+    box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+}
+
+.form-group input.input-error,
+.form-group select.input-error {
+    border-color: var(--rojo);
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 44px;
+}
+
+.toggle-pass {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+}
+
+.error-msg {
+    display: block;
+    color: var(--rojo);
+    font-size: 0.8rem;
+    margin-top: 4px;
+    min-height: 18px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 20px;
+}
+
+/* ==============================
+   BOTONES
+   ============================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radio-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transicion);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--azul-primario);
+    color: var(--blanco);
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: var(--azul-hover);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: var(--gris-100);
+    color: var(--gris-700);
+}
+
+.btn-secondary:hover {
+    background: var(--gris-200);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--azul-primario);
+    border: 1.5px solid var(--azul-primario);
+    padding: 8px 16px;
+    font-size: 0.88rem;
+}
+
+.btn-outline:hover {
+    background: var(--azul-claro);
+}
+
+.btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.btn-group .btn {
+    flex: 1;
+}
+
+/* ==============================
+   ALERTAS
+   ============================== */
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--radio-sm);
+    font-size: 0.9rem;
+    margin-top: 16px;
+    text-align: center;
+}
+
+.alert-error {
+    background: var(--rojo-claro);
+    color: var(--rojo);
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background: #f0fdf4;
+    color: var(--verde);
+    border: 1px solid #bbf7d0;
+}
+
+.info-text {
+    color: var(--gris-400);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ==============================
+   RESUMEN DE REGISTRO
+   ============================== */
+.resumen-card {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.resumen-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.resumen-card h2 {
+    margin-bottom: 20px;
+    color: var(--verde);
+}
+
+.resumen-datos {
+    background: var(--gris-50);
+    border-radius: var(--radio-sm);
+    padding: 20px;
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.resumen-datos p {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--gris-200);
+}
+
+.resumen-datos p:last-child {
+    border-bottom: none;
+}
+
+/* ==============================
+   LAYOUT DEL DASHBOARD
+   ============================== */
+.page-dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: var(--blanco);
+    border-right: 1px solid var(--gris-200);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--gris-200);
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: var(--radio-sm);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--gris-600);
+    cursor: pointer;
+    transition: all var(--transicion);
+    text-align: left;
+}
+
+.nav-item:hover {
+    background: var(--gris-100);
+    color: var(--gris-900);
+}
+
+.nav-item.active {
+    background: var(--azul-claro);
+    color: var(--azul-primario);
+    font-weight: 600;
+}
+
+.nav-item--danger {
+    color: var(--rojo);
+}
+
+.nav-item--danger:hover {
+    background: var(--rojo-claro);
+    color: var(--rojo);
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--gris-200);
+    font-size: 0.85rem;
+    color: var(--gris-400);
+}
+
+/* Menú toggle para móviles */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 200;
+    background: var(--blanco);
+    border: 1px solid var(--gris-200);
+    border-radius: var(--radio-sm);
+    padding: 8px 12px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: var(--sombra);
+}
+
+/* Contenido principal */
+.main-content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 32px;
+    max-width: 960px;
+}
+
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.dash-header h1 {
+    font-size: 1.6rem;
+}
+
+.dash-fecha {
+    color: var(--gris-400);
+    font-size: 0.88rem;
+}
+
+/* ==============================
+   TARJETA DE CUENTA
+   ============================== */
+.cuenta-card {
+    background: linear-gradient(135deg, var(--azul-oscuro) 0%, #1a3a6b 100%);
+    border-radius: var(--radio);
+    padding: 28px 32px;
+    color: var(--blanco);
+    box-shadow: var(--sombra-lg);
+}
+
+.cuenta-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.cuenta-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.cuenta-estado {
+    font-size: 0.85rem;
+    color: #86efac;
+}
+
+.cuenta-numero {
+    font-family: 'Outfit', monospace;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+.cuenta-saldo-label {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.cuenta-saldo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.cuenta-card__footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    opacity: 0.85;
+}
+
+/* ==============================
+   SECCIONES DEL DASHBOARD
+   ============================== */
+.seccion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.seccion-header h2 {
+    font-size: 1.2rem;
+}
+
+/* Tabla */
+.tabla-container {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabla th {
+    background: var(--gris-50);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gris-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--gris-200);
+}
+
+.tabla td {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--gris-100);
+}
+
+.tabla tr:hover td {
+    background: var(--gris-50);
+}
+
+.valor-positivo {
+    color: var(--verde);
+    font-weight: 600;
+}
+
+.valor-negativo {
+    color: var(--rojo);
+    font-weight: 600;
+}
+
+/* Formulario de operación */
+.form-operacion {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 28px;
+    box-shadow: var(--sombra);
+    max-width: 500px;
+}
+
+.info-cuenta {
+    background: var(--gris-50);
+    border-radius: var(--radio-sm);
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.info-cuenta p {
+    font-size: 0.9rem;
+    padding: 4px 0;
+}
+
+/* Resumen de transacción */
+.resumen-transaccion {
+    margin-top: 24px;
+    background: var(--blanco);
+    border-radius: var(--radio);
+    padding: 24px;
+    box-shadow: var(--sombra);
+    border-left: 4px solid var(--verde);
+}
+
+.resumen-transaccion h3 {
+    color: var(--verde);
+    margin-bottom: 16px;
+    font-size: 1.05rem;
+}
+
+.resumen-transaccion p {
+    padding: 6px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--gris-100);
+}
+
+.resumen-transaccion p:last-child {
+    border-bottom: none;
+}
+
+.resumen-transaccion .btn-outline {
+    margin-top: 16px;
+}
+
+/* ==============================
+   CERTIFICADO BANCARIO
+   ============================== */
+.certificado {
+    background: var(--blanco);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 48px 40px;
+    max-width: 700px;
+    border: 2px solid var(--gris-200);
+}
+
+.certificado__header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--azul-primario);
+    margin-bottom: 32px;
+}
+
+.certificado__header .logo {
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.certificado__header p {
+    font-size: 0.85rem;
+    color: var(--gris-400);
+}
+
+.certificado__body h2 {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+}
+
+.certificado__fecha {
+    text-align: center;
+    color: var(--gris-400);
+    font-size: 0.9rem;
+    margin-bottom: 28px;
+}
+
+.certificado__texto p {
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.certificado__titular {
+    font-size: 1.15rem !important;
+    font-weight: 600;
+    text-align: center;
+    color: var(--azul-primario);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.certificado__tabla {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.certificado__tabla td {
+    padding: 8px 12px;
+    font-size: 0.92rem;
+    border-bottom: 1px solid var(--gris-100);
+}
+
+.certificado__footer {
+    margin-top: 48px;
+    text-align: center;
+}
+
+.firma-linea {
+    width: 200px;
+    height: 1px;
+    background: var(--gris-800);
+    margin: 0 auto 8px;
+}
+
+.certificado__footer p {
+    font-size: 0.88rem;
+    color: var(--gris-600);
+}
+
+/* ==============================
+   ANIMACIONES
+   ============================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.seccion {
+    animation: fadeIn 0.3s ease;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-card {
+        padding: 28px 20px;
+    }
+
+    /* Dashboard móvil */
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px 16px;
+        padding-top: 60px;
+    }
+
+    .dash-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .dash-header h1 {
+        font-size: 1.3rem;
+    }
+
+    .cuenta-card {
+        padding: 20px;
+    }
+
+    .cuenta-saldo {
+        font-size: 1.7rem;
+    }
+
+    .cuenta-card__footer {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .certificado {
+        padding: 24px 16px;
+    }
+
+    .seccion-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-links {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+}
+
+/* ==============================
+   IMPRESIÓN
+   ============================== */
+@media print {
+    .sidebar, .menu-toggle, .btn, .nav-item, .dash-header {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .seccion {
+        display: block !important;
+        box-shadow: none;
+    }
+
+    .certificado {
+        border: 1px solid #ccc;
+        box-shadow: none;
+    }
+}

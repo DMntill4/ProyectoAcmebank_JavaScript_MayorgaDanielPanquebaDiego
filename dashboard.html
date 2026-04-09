@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-dashboard">
+
+    <!-- ==============================
+         SIDEBAR / MENÚ LATERAL
+    ============================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon logo-icon--sm">A</div>
+                <span class="logo-text">Banco Acme</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" onclick="navegarA('resumen')" id="nav-resumen">
+                <span class="nav-icon">🏠</span> Resumen
+            </button>
+            <button class="nav-item" onclick="navegarA('transacciones')" id="nav-transacciones">
+                <span class="nav-icon">📋</span> Transacciones
+            </button>
+            <button class="nav-item" onclick="navegarA('consignacion')" id="nav-consignacion">
+                <span class="nav-icon">💰</span> Consignación
+            </button>
+            <button class="nav-item" onclick="navegarA('retiro')" id="nav-retiro">
+                <span class="nav-icon">🏧</span> Retiro
+            </button>
+            <button class="nav-item" onclick="navegarA('servicios')" id="nav-servicios">
+                <span class="nav-icon">🔌</span> Pago Servicios
+            </button>
+            <button class="nav-item" onclick="navegarA('certificado')" id="nav-certificado">
+                <span class="nav-icon">📄</span> Certificado
+            </button>
+            <button class="nav-item nav-item--danger" onclick="cerrarSesion()">
+                <span class="nav-icon">🚪</span> Cerrar Sesión
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p id="sidebarNombre"></p>
+        </div>
+    </aside>
+
+    <!-- Botón menú móvil -->
+    <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- ==============================
+         ÁREA DE CONTENIDO PRINCIPAL
+    ============================== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- HEADER del dashboard -->
+        <header class="dash-header">
+            <h1 id="tituloPagina">Resumen de Cuenta</h1>
+            <p class="dash-fecha" id="fechaActual"></p>
+        </header>
+
+        <!-- ===== SECCIÓN: RESUMEN ===== -->
+        <section class="seccion" id="seccion-resumen">
+            <div class="cuenta-card">
+                <div class="cuenta-card__header">
+                    <span class="cuenta-badge">Cuenta de Ahorros</span>
+                    <span class="cuenta-estado">● Activa</span>
+                </div>
+                <div class="cuenta-card__body">
+                    <p class="cuenta-numero" id="dashNumeroCuenta"></p>
+                    <p class="cuenta-saldo-label">Saldo disponible</p>
+                    <p class="cuenta-saldo" id="dashSaldo"></p>
+                </div>
+                <div class="cuenta-card__footer">
+                    <p>Titular: <strong id="dashTitular"></strong></p>
+                    <p>Creada: <span id="dashFechaCreacion"></span></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN: TRANSACCIONES ===== -->
+        <section class="seccion" id="seccion-transacciones" style="display:none;">
+            <div class="seccion-header">
+                <h2>Últimas 10 Transacciones</h2>
+                <button class="btn btn-outline" onclick="imprimirSeccion('seccion-transacciones')">🖨 Imprimir</button>
+            </div>
+            <div class="tabla-container">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Referencia</th>
+                            <th>Tipo</th>
+                            <th>Concepto</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaTransacciones">
+                        <!-- Se llena dinámicamente con JS -->
+                    </tbody>
+                </table>
+                <p id="sinTransacciones" class="info-text" style="display:none;">No hay transacciones registradas.</p>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN: CONSIGNACIÓN ===== -->
+        <section class="seccion" id="seccion-consignacion" style="display:none;">
+            <div class="form-operacion">
+                <div class="info-cuenta">
+                    <p><strong>Cuenta:</strong> <span id="consigCuenta"></span></p>
+                    <p><strong>Titular:</strong> <span id="consigTitular"></span></p>
+                </div>
+                <div class="form-group">
+                    <label for="montoConsignacion">Monto a consignar ($)</label>
+                    <input type="number" id="montoConsignacion" placeholder="Ingrese el monto" min="1">
+                    <span class="error-msg" id="errConsignacion"></span>
+                </div>
+                <button class="btn btn-primary" onclick="realizarConsignacion()">Consignar</button>
+            </div>
+            <!-- Resumen de transacción -->
+            <div id="resumenConsignacion" class="resumen-transaccion" style="display:none;">
+                <div class="resumen-transaccion__content" id="resumenConsignacionContent"></div>
+                <button class="btn btn-outline" onclick="imprimirSeccion('resumenConsignacion')">🖨 Imprimir</button>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN: RETIRO ===== -->
+        <section class="seccion" id="seccion-retiro" style="display:none;">
+            <div class="form-operacion">
+                <div class="info-cuenta">
+                    <p><strong>Cuenta:</strong> <span id="retiroCuenta"></span></p>
+                    <p><strong>Titular:</strong> <span id="retiroTitular"></span></p>
+                    <p><strong>Saldo disponible:</strong> <span id="retiroSaldo"></span></p>
+                </div>
+                <div class="form-group">
+                    <label for="montoRetiro">Monto a retirar ($)</label>
+                    <input type="number" id="montoRetiro" placeholder="Ingrese el monto" min="1">
+                    <span class="error-msg" id="errRetiro"></span>
+                </div>
+                <button class="btn btn-primary" onclick="realizarRetiro()">Retirar</button>
+            </div>
+            <div id="resumenRetiro" class="resumen-transaccion" style="display:none;">
+                <div class="resumen-transaccion__content" id="resumenRetiroContent"></div>
+                <button class="btn btn-outline" onclick="imprimirSeccion('resumenRetiro')">🖨 Imprimir</button>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN: PAGO DE SERVICIOS ===== -->
+        <section class="seccion" id="seccion-servicios" style="display:none;">
+            <div class="form-operacion">
+                <div class="info-cuenta">
+                    <p><strong>Cuenta:</strong> <span id="servicioCuenta"></span></p>
+                    <p><strong>Titular:</strong> <span id="servicioTitular"></span></p>
+                    <p><strong>Saldo disponible:</strong> <span id="servicioSaldo"></span></p>
+                </div>
+                <div class="form-group">
+                    <label for="tipoServicio">Servicio Público</label>
+                    <select id="tipoServicio">
+                        <option value="">Seleccione...</option>
+                        <option value="Energía">Energía</option>
+                        <option value="Agua">Agua</option>
+                        <option value="Gas natural">Gas natural</option>
+                        <option value="Internet">Internet</option>
+                    </select>
+                    <span class="error-msg" id="errTipoServicio"></span>
+                </div>
+                <div class="form-group">
+                    <label for="referenciaServicio">Referencia de pago</label>
+                    <input type="text" id="referenciaServicio" placeholder="Número de referencia">
+                    <span class="error-msg" id="errReferenciaServicio"></span>
+                </div>
+                <div class="form-group">
+                    <label for="montoServicio">Valor a pagar ($)</label>
+                    <input type="number" id="montoServicio" placeholder="Ingrese el valor" min="1">
+                    <span class="error-msg" id="errMontoServicio"></span>
+                </div>
+                <button class="btn btn-primary" onclick="pagarServicio()">Pagar Servicio</button>
+            </div>
+            <div id="resumenServicio" class="resumen-transaccion" style="display:none;">
+                <div class="resumen-transaccion__content" id="resumenServicioContent"></div>
+                <button class="btn btn-outline" onclick="imprimirSeccion('resumenServicio')">🖨 Imprimir</button>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN: CERTIFICADO BANCARIO ===== -->
+        <section class="seccion" id="seccion-certificado" style="display:none;">
+            <div class="certificado" id="certificadoContenido">
+                <div class="certificado__header">
+                    <div class="logo">
+                        <div class="logo-icon">A</div>
+                        <span class="logo-text">Banco Acme S.A.</span>
+                    </div>
+                    <p>NIT: 900.123.456-7</p>
+                </div>
+                <div class="certificado__body">
+                    <h2>CERTIFICADO BANCARIO</h2>
+                    <p class="certificado__fecha" id="certFechaExpedicion"></p>
+                    <div class="certificado__texto">
+                        <p>El <strong>BANCO ACME S.A.</strong>, entidad vigilada por la Superintendencia Financiera de Colombia, certifica que:</p>
+                        <p class="certificado__titular" id="certTitular"></p>
+                        <p>Identificado(a) con <strong id="certTipoId"></strong> número <strong id="certNumId"></strong>, es titular de la siguiente cuenta:</p>
+                        <table class="certificado__tabla">
+                            <tr>
+                                <td><strong>Tipo de cuenta:</strong></td>
+                                <td>Cuenta de Ahorros</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Número de cuenta:</strong></td>
+                                <td id="certNumeroCuenta"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estado:</strong></td>
+                                <td>Activa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Fecha de apertura:</strong></td>
+                                <td id="certFechaApertura"></td>
+                            </tr>
+                        </table>
+                        <p>El presente certificado se expide a solicitud del interesado.</p>
+                    </div>
+                </div>
+                <div class="certificado__footer">
+                    <div class="certificado__firma">
+                        <div class="firma-linea"></div>
+                        <p><strong>Banco Acme S.A.</strong></p>
+                        <p>Departamento de Servicio al Cliente</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline" onclick="imprimirSeccion('certificadoContenido')">🖨 Imprimir Certificado</button>
+        </section>
+
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

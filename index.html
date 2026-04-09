@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Acme - Inicio de Sesión</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="page-auth">
+
+    <!-- ==============================
+         PÁGINA DE INICIO DE SESIÓN
+    ============================== -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo y título -->
+            <div class="auth-header">
+                <div class="logo">
+                    <div class="logo-icon">A</div>
+                    <span class="logo-text">Banco Acme</span>
+                </div>
+                <p class="auth-subtitle">Bienvenido de vuelta</p>
+            </div>
+
+            <!-- Formulario de login -->
+            <div id="loginForm">
+                <div class="form-group">
+                    <label for="tipoId">Tipo de Identificación</label>
+                    <select id="tipoId" required>
+                        <option value="">Seleccione...</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="TI">Tarjeta de Identidad</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="PP">Pasaporte</option>
+                    </select>
+                    <span class="error-msg" id="errorTipoId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="numId">Número de Identificación</label>
+                    <input type="text" id="numId" placeholder="Ingrese su número" required>
+                    <span class="error-msg" id="errorNumId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+                        <button type="button" class="toggle-pass" onclick="togglePassword('password', this)">👁</button>
+                    </div>
+                    <span class="error-msg" id="errorPassword"></span>
+                </div>
+
+                <button class="btn btn-primary" onclick="iniciarSesion()">Iniciar Sesión</button>
+
+                <!-- Mensaje de error general -->
+                <div id="mensajeError" class="alert alert-error" style="display:none;"></div>
+
+                <div class="auth-links">
+                    <a href="registro.html">Crear cuenta</a>
+                    <a href="recuperar.html">¿Olvidaste tu contraseña?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
