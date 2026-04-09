@@ -1,33 +1,83 @@
 /* ==============================
-   VARIABLES CSS (Paleta bancaria)
+   VARIABLES CSS
+   Aquí definimos los colores y valores
+   que usaremos en toda la página
    ============================== */
 :root {
-    --azul-oscuro: #0a1628;
+    /* --- Colores de marca (no cambian con el tema) --- */
     --azul-primario: #1a56db;
     --azul-hover: #1648b8;
-    --azul-claro: #e8f0fe;
     --verde: #16a34a;
     --rojo: #dc2626;
-    --rojo-claro: #fef2f2;
-    --gris-50: #f8fafc;
-    --gris-100: #f1f5f9;
-    --gris-200: #e2e8f0;
-    --gris-300: #cbd5e1;
-    --gris-400: #94a3b8;
-    --gris-600: #475569;
-    --gris-700: #334155;
-    --gris-800: #1e293b;
-    --gris-900: #0f172a;
-    --blanco: #ffffff;
-    --sombra: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
-    --sombra-lg: 0 4px 24px rgba(0,0,0,0.1);
+
+    /* --- Variables semánticas (MODO CLARO por defecto) ---
+       Estas sí cambian cuando activamos el modo oscuro */
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-2: #f1f5f9;
+    --bg-input: #ffffff;
+    --bg-hover: #f1f5f9;
+    --bg-active: #e8f0fe;
+    --bg-active-text: #1a56db;
+
+    --text-primary: #1e293b;
+    --text-secondary: #334155;
+    --text-muted: #94a3b8;
+    --text-label: #475569;
+
+    --border-color: #e2e8f0;
+    --border-input: #e2e8f0;
+    --border-focus: rgba(26, 86, 219, 0.15);
+
+    --rojo-suave: #fef2f2;
+    --verde-suave: #f0fdf4;
+    --azul-suave: #e8f0fe;
+
+    --sombra: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+    --sombra-lg: 0 8px 30px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+
     --radio: 12px;
     --radio-sm: 8px;
     --transicion: 0.2s ease;
 }
 
 /* ==============================
+   MODO OSCURO
+   Cuando el <html> tiene data-theme="dark",
+   reemplazamos las variables por colores oscuros
+   ============================== */
+[data-theme="dark"] {
+    --bg-body: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-surface-2: #263447;
+    --bg-input: #1e2d42;
+    --bg-hover: #2d3f57;
+    --bg-active: #1a2f50;
+    --bg-active-text: #60a5fa;
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --text-label: #94a3b8;
+
+    --border-color: #334155;
+    --border-input: #334155;
+    --border-focus: rgba(96, 165, 250, 0.2);
+
+    --rojo-suave: #3b1515;
+    --verde-suave: #0f2d1a;
+    --azul-suave: #1a2f50;
+
+    --sombra: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+    --sombra-lg: 0 8px 30px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+
+    --verde: #22c55e;
+    --rojo: #f87171;
+}
+
+/* ==============================
    RESET Y BASE
+   Eliminamos márgenes/rellenos por defecto
    ============================== */
 *, *::before, *::after {
     margin: 0;
@@ -37,16 +87,17 @@
 
 body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--gris-50);
-    color: var(--gris-800);
+    background: var(--bg-body);
+    color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
+    transition: background var(--transicion), color var(--transicion);
 }
 
 h1, h2, h3 {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
-    color: var(--gris-900);
+    color: var(--text-primary);
 }
 
 /* ==============================
@@ -58,11 +109,12 @@ h1, h2, h3 {
     gap: 10px;
 }
 
+/* El icono cuadrado con la "A" */
 .logo-icon {
     width: 44px;
     height: 44px;
     background: linear-gradient(135deg, var(--azul-primario), #3b82f6);
-    color: var(--blanco);
+    color: #ffffff;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -70,6 +122,8 @@ h1, h2, h3 {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(26,86,219,0.35);
 }
 
 .logo-icon--sm {
@@ -82,11 +136,49 @@ h1, h2, h3 {
     font-family: 'Outfit', sans-serif;
     font-weight: 700;
     font-size: 1.3rem;
-    color: var(--gris-900);
+    color: var(--text-primary);
+}
+
+/* ==============================
+   BOTÓN DE TEMA (Claro / Oscuro)
+   Botón circular flotante en las páginas de auth
+   y en el header del dashboard
+   ============================== */
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.9);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transicion);
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+/* Versión del botón para el dashboard (fondo claro) */
+.theme-toggle--dash {
+    border-color: var(--border-color);
+    background: var(--bg-surface);
+    color: var(--text-label);
+}
+
+.theme-toggle--dash:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
 /* ==============================
    PÁGINAS DE AUTENTICACIÓN
+   (index.html, registro.html, recuperar.html)
    ============================== */
 .page-auth {
     display: flex;
@@ -94,7 +186,16 @@ h1, h2, h3 {
     justify-content: center;
     min-height: 100vh;
     padding: 20px;
-    background: linear-gradient(145deg, var(--azul-oscuro) 0%, #162544 50%, #1a3a6b 100%);
+    background: linear-gradient(145deg, #0a1628 0%, #162544 50%, #1a3a6b 100%);
+    position: relative;
+}
+
+/* Botón de tema en páginas de auth: fijo arriba a la derecha */
+.page-auth .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 50;
 }
 
 .auth-container {
@@ -104,10 +205,11 @@ h1, h2, h3 {
 }
 
 .auth-card {
-    background: var(--blanco);
+    background: var(--bg-surface);
     border-radius: var(--radio);
     padding: 40px 32px;
     box-shadow: var(--sombra-lg);
+    transition: background var(--transicion);
 }
 
 .auth-card--wide {
@@ -129,7 +231,7 @@ h1, h2, h3 {
 }
 
 .auth-subtitle {
-    color: var(--gris-400);
+    color: var(--text-muted);
     font-size: 0.95rem;
 }
 
@@ -162,7 +264,7 @@ h1, h2, h3 {
     display: block;
     font-size: 0.88rem;
     font-weight: 500;
-    color: var(--gris-700);
+    color: var(--text-label);
     margin-bottom: 6px;
 }
 
@@ -170,20 +272,20 @@ h1, h2, h3 {
 .form-group select {
     width: 100%;
     padding: 11px 14px;
-    border: 1.5px solid var(--gris-200);
+    border: 1.5px solid var(--border-input);
     border-radius: var(--radio-sm);
     font-size: 0.95rem;
     font-family: 'DM Sans', sans-serif;
-    color: var(--gris-800);
-    background: var(--blanco);
-    transition: border-color var(--transicion), box-shadow var(--transicion);
+    color: var(--text-primary);
+    background: var(--bg-input);
+    transition: border-color var(--transicion), box-shadow var(--transicion), background var(--transicion);
     outline: none;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--azul-primario);
-    box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.12);
+    box-shadow: 0 0 0 3px var(--border-focus);
 }
 
 .form-group input.input-error,
@@ -191,6 +293,7 @@ h1, h2, h3 {
     border-color: var(--rojo);
 }
 
+/* Wrapper del campo de contraseña */
 .password-wrapper {
     position: relative;
 }
@@ -199,6 +302,7 @@ h1, h2, h3 {
     padding-right: 44px;
 }
 
+/* Botón ojo para mostrar/ocultar contraseña */
 .toggle-pass {
     position: absolute;
     right: 10px;
@@ -207,10 +311,19 @@ h1, h2, h3 {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.1rem;
+    color: var(--text-muted);
     padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transicion);
 }
 
+.toggle-pass:hover {
+    color: var(--text-label);
+}
+
+/* Mensaje de error debajo del campo */
 .error-msg {
     display: block;
     color: var(--rojo);
@@ -219,6 +332,7 @@ h1, h2, h3 {
     min-height: 18px;
 }
 
+/* Grid de dos columnas para formularios anchos */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -244,26 +358,31 @@ h1, h2, h3 {
     text-decoration: none;
 }
 
+/* Botón azul principal */
 .btn-primary {
     background: var(--azul-primario);
-    color: var(--blanco);
+    color: #ffffff;
     width: 100%;
 }
 
 .btn-primary:hover {
     background: var(--azul-hover);
     transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26,86,219,0.3);
 }
 
+/* Botón secundario (gris) */
 .btn-secondary {
-    background: var(--gris-100);
-    color: var(--gris-700);
+    background: var(--bg-surface-2);
+    color: var(--text-label);
 }
 
 .btn-secondary:hover {
-    background: var(--gris-200);
+    background: var(--border-color);
+    color: var(--text-primary);
 }
 
+/* Botón con solo borde */
 .btn-outline {
     background: transparent;
     color: var(--azul-primario);
@@ -273,9 +392,25 @@ h1, h2, h3 {
 }
 
 .btn-outline:hover {
-    background: var(--azul-claro);
+    background: var(--azul-suave);
 }
 
+/* Botón de volver (con flecha) */
+.btn-volver {
+    background: var(--bg-surface-2);
+    color: var(--text-label);
+    border: 1.5px solid var(--border-color);
+    padding: 9px 18px;
+    font-size: 0.88rem;
+    width: auto;
+}
+
+.btn-volver:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* Grupo de botones lado a lado */
 .btn-group {
     display: flex;
     gap: 12px;
@@ -287,7 +422,7 @@ h1, h2, h3 {
 }
 
 /* ==============================
-   ALERTAS
+   ALERTAS / MENSAJES
    ============================== */
 .alert {
     padding: 12px 16px;
@@ -298,35 +433,45 @@ h1, h2, h3 {
 }
 
 .alert-error {
-    background: var(--rojo-claro);
+    background: var(--rojo-suave);
     color: var(--rojo);
-    border: 1px solid #fecaca;
+    border: 1px solid rgba(220,38,38,0.2);
 }
 
 .alert-success {
-    background: #f0fdf4;
+    background: var(--verde-suave);
     color: var(--verde);
-    border: 1px solid #bbf7d0;
+    border: 1px solid rgba(22,163,74,0.2);
 }
 
+/* Texto informativo gris */
 .info-text {
-    color: var(--gris-400);
+    color: var(--text-muted);
     font-size: 0.9rem;
     text-align: center;
     padding: 20px;
 }
 
 /* ==============================
-   RESUMEN DE REGISTRO
+   RESUMEN DE REGISTRO EXITOSO
+   (registro.html - después de crear cuenta)
    ============================== */
 .resumen-card {
     text-align: center;
     padding: 20px 0;
 }
 
+/* Icono de check grande */
 .resumen-icon {
-    font-size: 3rem;
-    margin-bottom: 12px;
+    width: 64px;
+    height: 64px;
+    background: var(--verde-suave);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    color: var(--verde);
 }
 
 .resumen-card h2 {
@@ -335,16 +480,18 @@ h1, h2, h3 {
 }
 
 .resumen-datos {
-    background: var(--gris-50);
+    background: var(--bg-surface-2);
     border-radius: var(--radio-sm);
     padding: 20px;
     text-align: left;
     margin-bottom: 24px;
+    transition: background var(--transicion);
 }
 
 .resumen-datos p {
     padding: 6px 0;
-    border-bottom: 1px solid var(--gris-200);
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.9rem;
 }
 
 .resumen-datos p:last-child {
@@ -357,13 +504,15 @@ h1, h2, h3 {
 .page-dashboard {
     display: flex;
     min-height: 100vh;
+    background: var(--bg-body);
+    transition: background var(--transicion);
 }
 
-/* Sidebar */
+/* --- Sidebar (menú lateral) --- */
 .sidebar {
     width: 260px;
-    background: var(--blanco);
-    border-right: 1px solid var(--gris-200);
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -371,14 +520,15 @@ h1, h2, h3 {
     left: 0;
     bottom: 0;
     z-index: 100;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background var(--transicion), border-color var(--transicion);
 }
 
 .sidebar-header {
     padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--gris-200);
+    border-bottom: 1px solid var(--border-color);
 }
 
+/* Lista de botones de navegación */
 .sidebar-nav {
     flex: 1;
     padding: 12px;
@@ -388,6 +538,7 @@ h1, h2, h3 {
     overflow-y: auto;
 }
 
+/* Cada ítem del menú */
 .nav-item {
     display: flex;
     align-items: center;
@@ -400,62 +551,116 @@ h1, h2, h3 {
     font-family: 'DM Sans', sans-serif;
     font-size: 0.92rem;
     font-weight: 500;
-    color: var(--gris-600);
+    color: var(--text-label);
     cursor: pointer;
     transition: all var(--transicion);
     text-align: left;
 }
 
 .nav-item:hover {
-    background: var(--gris-100);
-    color: var(--gris-900);
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
+/* Ítem activo (sección actual) */
 .nav-item.active {
-    background: var(--azul-claro);
-    color: var(--azul-primario);
+    background: var(--bg-active);
+    color: var(--bg-active-text);
     font-weight: 600;
 }
 
+/* Ítem de cerrar sesión (rojo) */
 .nav-item--danger {
     color: var(--rojo);
+    margin-top: auto;
 }
 
 .nav-item--danger:hover {
-    background: var(--rojo-claro);
+    background: var(--rojo-suave);
     color: var(--rojo);
 }
 
+/* Contenedor del ícono en el nav */
 .nav-icon {
-    font-size: 1.1rem;
     width: 22px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
+/* Pie del sidebar: nombre del usuario + exportar/importar */
 .sidebar-footer {
     padding: 16px 20px;
-    border-top: 1px solid var(--gris-200);
+    border-top: 1px solid var(--border-color);
     font-size: 0.85rem;
-    color: var(--gris-400);
+    color: var(--text-muted);
 }
 
-/* Menú toggle para móviles */
+.sidebar-footer p {
+    margin-bottom: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botones de exportar/importar en el sidebar */
+.sidebar-data-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-data-action {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radio-sm);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transicion);
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-data-action:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--azul-primario);
+}
+
+/* ==============================
+   BOTÓN MENÚ MÓVIL (hamburguesa)
+   Solo visible en pantallas pequeñas
+   ============================== */
 .menu-toggle {
     display: none;
     position: fixed;
     top: 14px;
     left: 14px;
     z-index: 200;
-    background: var(--blanco);
-    border: 1px solid var(--gris-200);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
     border-radius: var(--radio-sm);
     padding: 8px 12px;
-    font-size: 1.3rem;
     cursor: pointer;
     box-shadow: var(--sombra);
+    color: var(--text-primary);
+    align-items: center;
+    justify-content: center;
 }
 
-/* Contenido principal */
+/* ==============================
+   CONTENIDO PRINCIPAL DEL DASHBOARD
+   ============================== */
 .main-content {
     flex: 1;
     margin-left: 260px;
@@ -463,6 +668,7 @@ h1, h2, h3 {
     max-width: 960px;
 }
 
+/* Header: título + fecha + botón tema */
 .dash-header {
     display: flex;
     justify-content: space-between;
@@ -470,73 +676,217 @@ h1, h2, h3 {
     margin-bottom: 28px;
 }
 
+.dash-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
 .dash-header h1 {
     font-size: 1.6rem;
 }
 
 .dash-fecha {
-    color: var(--gris-400);
+    color: var(--text-muted);
     font-size: 0.88rem;
 }
 
 /* ==============================
-   TARJETA DE CUENTA
+   TARJETA DE CUENTA (Estilo AmEx)
+   Diseñada para verse como una tarjeta bancaria real
    ============================== */
 .cuenta-card {
-    background: linear-gradient(135deg, var(--azul-oscuro) 0%, #1a3a6b 100%);
-    border-radius: var(--radio);
+    /* Gradiente oscuro tipo American Express */
+    background: linear-gradient(140deg, #0a1628 0%, #1c3a6e 55%, #0d2451 100%);
+    border-radius: 20px;
     padding: 28px 32px;
-    color: var(--blanco);
-    box-shadow: var(--sombra-lg);
+    color: #ffffff;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 4px 20px rgba(26,86,219,0.15);
+    position: relative;
+    overflow: hidden;
+    max-width: 480px;
 }
 
+/* Círculo decorativo arriba a la derecha */
+.cuenta-card::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* Círculo decorativo abajo a la izquierda */
+.cuenta-card::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(26, 86, 219, 0.15);
+    pointer-events: none;
+}
+
+/* Header de la tarjeta: logo del banco + estado */
 .cuenta-card__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
 }
 
-.cuenta-badge {
-    background: rgba(255,255,255,0.15);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
+/* Logo del banco dentro de la tarjeta */
+.cuenta-bank-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.cuenta-estado {
+.cuenta-bank-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
     font-size: 0.85rem;
-    color: #86efac;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.9);
+    text-transform: uppercase;
 }
 
+/* Indicador "Activa" con punto verde */
+.cuenta-estado {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.85);
+}
+
+.estado-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.25);
+    flex-shrink: 0;
+}
+
+/* Cuerpo de la tarjeta: chip + número + saldo */
+.cuenta-card__body {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 22px;
+}
+
+/* Chip EMV dorado (el cuadradito de las tarjetas) */
+.cuenta-chip {
+    width: 44px;
+    height: 34px;
+    background: linear-gradient(135deg, #c8a84b 0%, #e8cc6d 40%, #a0832e 100%);
+    border-radius: 6px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Líneas horizontales del chip */
+.cuenta-chip::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(0,0,0,0.2);
+    transform: translateY(-50%);
+}
+
+/* Línea vertical del chip */
+.cuenta-chip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(0,0,0,0.2);
+    transform: translateX(-50%);
+}
+
+/* Número de cuenta */
 .cuenta-numero {
     font-family: 'Outfit', monospace;
     font-size: 1.3rem;
-    letter-spacing: 2px;
-    margin-bottom: 16px;
-    opacity: 0.9;
+    letter-spacing: 4px;
+    margin-bottom: 18px;
+    opacity: 0.95;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
 
 .cuenta-saldo-label {
-    font-size: 0.85rem;
-    opacity: 0.7;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    opacity: 0.6;
+    margin-bottom: 4px;
 }
 
+/* Saldo grande */
 .cuenta-saldo {
     font-family: 'Outfit', sans-serif;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+/* Pie de la tarjeta: titular + fecha + tipo */
 .cuenta-card__footer {
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.15);
     display: flex;
     justify-content: space-between;
-    font-size: 0.88rem;
-    opacity: 0.85;
+    align-items: flex-end;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    position: relative;
+    z-index: 1;
+    gap: 12px;
+}
+
+.cuenta-footer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.cuenta-footer-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    opacity: 0.5;
+}
+
+.cuenta-card__footer p,
+.cuenta-card__footer span,
+.cuenta-card__footer strong {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Badge "Ahorros" en la tarjeta */
+.cuenta-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
 }
 
 /* ==============================
@@ -553,12 +903,13 @@ h1, h2, h3 {
     font-size: 1.2rem;
 }
 
-/* Tabla */
+/* --- Tabla de transacciones --- */
 .tabla-container {
-    background: var(--blanco);
+    background: var(--bg-surface);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
     overflow-x: auto;
+    transition: background var(--transicion);
 }
 
 .tabla {
@@ -567,25 +918,26 @@ h1, h2, h3 {
 }
 
 .tabla th {
-    background: var(--gris-50);
+    background: var(--bg-surface-2);
     padding: 12px 16px;
     text-align: left;
     font-size: 0.82rem;
     font-weight: 600;
-    color: var(--gris-600);
+    color: var(--text-label);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid var(--gris-200);
+    border-bottom: 2px solid var(--border-color);
 }
 
 .tabla td {
     padding: 12px 16px;
     font-size: 0.9rem;
-    border-bottom: 1px solid var(--gris-100);
+    border-bottom: 1px solid var(--bg-surface-2);
+    color: var(--text-primary);
 }
 
 .tabla tr:hover td {
-    background: var(--gris-50);
+    background: var(--bg-surface-2);
 }
 
 .valor-positivo {
@@ -598,47 +950,55 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-/* Formulario de operación */
+/* --- Formulario de operación (consignar, retirar, etc.) --- */
 .form-operacion {
-    background: var(--blanco);
+    background: var(--bg-surface);
     border-radius: var(--radio);
     padding: 28px;
     box-shadow: var(--sombra);
     max-width: 500px;
+    transition: background var(--transicion);
 }
 
+/* Resumen de datos de la cuenta arriba del formulario */
 .info-cuenta {
-    background: var(--gris-50);
+    background: var(--bg-surface-2);
     border-radius: var(--radio-sm);
     padding: 16px;
     margin-bottom: 20px;
+    transition: background var(--transicion);
 }
 
 .info-cuenta p {
     font-size: 0.9rem;
     padding: 4px 0;
+    color: var(--text-primary);
 }
 
-/* Resumen de transacción */
+/* --- Resumen de transacción exitosa --- */
 .resumen-transaccion {
     margin-top: 24px;
-    background: var(--blanco);
+    background: var(--bg-surface);
     border-radius: var(--radio);
     padding: 24px;
     box-shadow: var(--sombra);
     border-left: 4px solid var(--verde);
+    transition: background var(--transicion);
 }
 
-.resumen-transaccion h3 {
+/* Título en verde del resumen */
+.success-title {
     color: var(--verde);
     margin-bottom: 16px;
     font-size: 1.05rem;
+    font-family: 'Outfit', sans-serif;
 }
 
 .resumen-transaccion p {
     padding: 6px 0;
     font-size: 0.9rem;
-    border-bottom: 1px solid var(--gris-100);
+    border-bottom: 1px solid var(--bg-surface-2);
+    color: var(--text-primary);
 }
 
 .resumen-transaccion p:last-child {
@@ -652,13 +1012,27 @@ h1, h2, h3 {
 /* ==============================
    CERTIFICADO BANCARIO
    ============================== */
+.certificado-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Fila de botones debajo del certificado */
+.certificado-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .certificado {
-    background: var(--blanco);
+    background: var(--bg-surface);
     border-radius: var(--radio);
     box-shadow: var(--sombra);
     padding: 48px 40px;
     max-width: 700px;
-    border: 2px solid var(--gris-200);
+    border: 2px solid var(--border-color);
+    transition: background var(--transicion);
 }
 
 .certificado__header {
@@ -675,7 +1049,7 @@ h1, h2, h3 {
 
 .certificado__header p {
     font-size: 0.85rem;
-    color: var(--gris-400);
+    color: var(--text-muted);
 }
 
 .certificado__body h2 {
@@ -687,7 +1061,7 @@ h1, h2, h3 {
 
 .certificado__fecha {
     text-align: center;
-    color: var(--gris-400);
+    color: var(--text-muted);
     font-size: 0.9rem;
     margin-bottom: 28px;
 }
@@ -716,7 +1090,8 @@ h1, h2, h3 {
 .certificado__tabla td {
     padding: 8px 12px;
     font-size: 0.92rem;
-    border-bottom: 1px solid var(--gris-100);
+    border-bottom: 1px solid var(--bg-surface-2);
+    color: var(--text-primary);
 }
 
 .certificado__footer {
@@ -727,13 +1102,14 @@ h1, h2, h3 {
 .firma-linea {
     width: 200px;
     height: 1px;
-    background: var(--gris-800);
+    background: var(--text-primary);
     margin: 0 auto 8px;
+    opacity: 0.4;
 }
 
 .certificado__footer p {
     font-size: 0.88rem;
-    color: var(--gris-600);
+    color: var(--text-label);
 }
 
 /* ==============================
@@ -741,7 +1117,7 @@ h1, h2, h3 {
    ============================== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .seccion {
@@ -749,7 +1125,7 @@ h1, h2, h3 {
 }
 
 /* ==============================
-   RESPONSIVE
+   RESPONSIVE (pantallas pequeñas)
    ============================== */
 @media (max-width: 768px) {
     .form-grid {
@@ -760,7 +1136,7 @@ h1, h2, h3 {
         padding: 28px 20px;
     }
 
-    /* Dashboard móvil */
+    /* En móvil el sidebar se oculta */
     .sidebar {
         transform: translateX(-100%);
     }
@@ -770,19 +1146,19 @@ h1, h2, h3 {
     }
 
     .menu-toggle {
-        display: block;
+        display: flex;
     }
 
     .main-content {
         margin-left: 0;
         padding: 20px 16px;
-        padding-top: 60px;
+        padding-top: 64px;
     }
 
     .dash-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 4px;
+        gap: 8px;
     }
 
     .dash-header h1 {
@@ -790,16 +1166,16 @@ h1, h2, h3 {
     }
 
     .cuenta-card {
-        padding: 20px;
+        padding: 20px 22px;
     }
 
     .cuenta-saldo {
-        font-size: 1.7rem;
+        font-size: 1.6rem;
     }
 
     .cuenta-card__footer {
-        flex-direction: column;
-        gap: 4px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
 
     .certificado {
@@ -810,6 +1186,10 @@ h1, h2, h3 {
         flex-direction: column;
         gap: 12px;
         align-items: flex-start;
+    }
+
+    .certificado-actions {
+        flex-wrap: wrap;
     }
 }
 
@@ -826,10 +1206,18 @@ h1, h2, h3 {
 }
 
 /* ==============================
-   IMPRESIÓN
+   ESTILOS DE IMPRESIÓN
+   Cuando el usuario imprime, ocultamos
+   lo que no debe aparecer en el papel
    ============================== */
 @media print {
-    .sidebar, .menu-toggle, .btn, .nav-item, .dash-header {
+    .sidebar,
+    .menu-toggle,
+    .btn,
+    .nav-item,
+    .dash-header,
+    .certificado-actions,
+    .theme-toggle {
         display: none !important;
     }
 

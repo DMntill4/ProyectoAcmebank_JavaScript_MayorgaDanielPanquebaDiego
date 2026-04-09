@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banco Acme - Registro</title>
+
+    <!-- Aplicar tema guardado antes de mostrar la página -->
+    <script>
+        var temaGuardado = localStorage.getItem("acmebank_tema");
+        if (temaGuardado === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="page-auth">
 
+    <!-- Botón para cambiar entre modo claro y oscuro -->
+    <button class="theme-toggle" id="btnTema" onclick="toggleTema()" title="Cambiar tema"></button>
+
     <div class="auth-container">
         <div class="auth-card auth-card--wide">
+
             <div class="auth-header">
                 <div class="logo">
                     <div class="logo-icon">A</div>
@@ -23,6 +36,7 @@
             <!-- Formulario de registro -->
             <div id="registroForm">
                 <div class="form-grid">
+
                     <div class="form-group">
                         <label for="regTipoId">Tipo de Identificación</label>
                         <select id="regTipoId" required>
@@ -92,7 +106,13 @@
                         <label for="regPassword">Contraseña</label>
                         <div class="password-wrapper">
                             <input type="password" id="regPassword" placeholder="Mínimo 8 caracteres">
-                            <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)">👁</button>
+                            <button type="button" class="toggle-pass" onclick="togglePassword('regPassword', this)" aria-label="Mostrar contraseña">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
                         </div>
                         <span class="error-msg" id="errRegPassword"></span>
                     </div>
@@ -101,11 +121,18 @@
                         <label for="regPasswordConfirm">Confirmar Contraseña</label>
                         <div class="password-wrapper">
                             <input type="password" id="regPasswordConfirm" placeholder="Repita la contraseña">
-                            <button type="button" class="toggle-pass" onclick="togglePassword('regPasswordConfirm', this)">👁</button>
+                            <button type="button" class="toggle-pass" onclick="togglePassword('regPasswordConfirm', this)" aria-label="Mostrar contraseña">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
                         </div>
                         <span class="error-msg" id="errRegPasswordConfirm"></span>
                     </div>
-                </div>
+
+                </div><!-- fin .form-grid -->
 
                 <div class="btn-group">
                     <button class="btn btn-secondary" onclick="window.location.href='index.html'">Cancelar</button>
@@ -115,11 +142,17 @@
                 <div id="mensajeRegistro" class="alert" style="display:none;"></div>
             </div>
 
-            <!-- Resumen de registro exitoso (oculto por defecto) -->
+            <!-- Resumen de registro exitoso (oculto hasta que se cree la cuenta) -->
             <div id="resumenRegistro" style="display:none;">
                 <div class="resumen-card">
-                    <div class="resumen-icon">✅</div>
-                    <h2>¡Cuenta creada exitosamente!</h2>
+                    <!-- Ícono de check en verde -->
+                    <div class="resumen-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                    <h2>Cuenta creada exitosamente</h2>
                     <div class="resumen-datos">
                         <p><strong>Número de cuenta:</strong> <span id="resNumeroCuenta"></span></p>
                         <p><strong>Titular:</strong> <span id="resTitular"></span></p>
@@ -130,6 +163,7 @@
                     <a href="index.html" class="btn btn-primary">Ir a Iniciar Sesión</a>
                 </div>
             </div>
+
         </div>
     </div>
 

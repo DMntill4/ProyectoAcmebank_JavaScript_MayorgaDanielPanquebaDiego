@@ -5,7 +5,7 @@
 
 // --- FORMATEAR MONEDA ---
 // Recibe un número y lo muestra como dinero colombiano
-// Ejemplo: formatearMoneda(50000) => "$ 50.000,00"
+// Ejemplo: formatearMoneda(50000) => "$ 50.000"
 function formatearMoneda(valor) {
     return new Intl.NumberFormat("es-CO", {
         style: "currency",
@@ -16,7 +16,7 @@ function formatearMoneda(valor) {
 
 // --- FORMATEAR FECHA ---
 // Convierte un string de fecha a formato legible
-// Ejemplo: formatearFecha("2025-04-09T...") => "9 de abril de 2025, 10:30 a.m."
+// Ejemplo: formatearFecha("2025-04-09T10:30:00") => "9 de abril de 2025, 10:30 a.m."
 function formatearFecha(fechaStr) {
     const fecha = new Date(fechaStr);
     return fecha.toLocaleDateString("es-CO", {
@@ -40,13 +40,11 @@ function formatearSoloFecha(fechaStr) {
 
 // --- GENERAR NÚMERO DE CUENTA ---
 // Crea un número de cuenta aleatorio de 10 dígitos
-// Empieza con "40" (como si fuera el código del banco)
+// Empieza con "40" (código del banco)
 function generarNumeroCuenta() {
-    // Math.random() genera un decimal entre 0 y 1
-    // Lo multiplicamos y convertimos a string para obtener dígitos
     const random = Math.floor(Math.random() * 100000000)
         .toString()
-        .padStart(8, "0"); // padStart rellena con ceros si hace falta
+        .padStart(8, "0");
     return "40" + random;
 }
 
@@ -54,12 +52,9 @@ function generarNumeroCuenta() {
 // Crea un código de referencia para las transacciones
 // Ejemplo: "REF-A3B7C2D1"
 function generarReferencia() {
-    // Tomamos parte del timestamp y caracteres aleatorios
     const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let referencia = "REF-";
     for (let i = 0; i < 8; i++) {
-        // charAt obtiene el carácter en una posición
-        // Math.random() * length nos da una posición aleatoria
         const indice = Math.floor(Math.random() * caracteres.length);
         referencia += caracteres.charAt(indice);
     }
@@ -68,24 +63,42 @@ function generarReferencia() {
 
 // --- MOSTRAR/OCULTAR CONTRASEÑA ---
 // Cambia el tipo del input entre "password" y "text"
+// Usamos SVG en lugar de emojis para los íconos
 function togglePassword(inputId, boton) {
     const input = document.getElementById(inputId);
+
+    // SVG del ojo abierto (contraseña visible)
+    const iconoVer = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94
+        M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19
+        m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>
+    </svg>`;
+
+    // SVG del ojo cerrado (contraseña oculta)
+    const iconoOcultar = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+    </svg>`;
+
     if (input.type === "password") {
         input.type = "text";
-        boton.textContent = "🙈";
+        boton.innerHTML = iconoVer;
     } else {
         input.type = "password";
-        boton.textContent = "👁";
+        boton.innerHTML = iconoOcultar;
     }
 }
 
 // --- VALIDAR QUE UN CAMPO NO ESTÉ VACÍO ---
-// Retorna true si es válido, false si está vacío
+// Retorna true si tiene contenido, false si está vacío
 // También muestra/oculta el mensaje de error
 function validarCampo(inputId, errorId, mensaje) {
     const input = document.getElementById(inputId);
     const error = document.getElementById(errorId);
-    const valor = input.value.trim(); // trim() quita espacios al inicio y final
+    const valor = input.value.trim();
 
     if (valor === "") {
         error.textContent = mensaje;
@@ -99,42 +112,39 @@ function validarCampo(inputId, errorId, mensaje) {
 }
 
 // --- VALIDAR EMAIL ---
-// Usa una expresión regular (regex) para verificar el formato
+// Usa una expresión regular para verificar el formato
+// Verifica que tenga: texto@texto.texto
 function validarEmail(email) {
-    // Esta regex verifica: texto@texto.texto
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
 // --- VALIDAR CONTRASEÑA ---
-// Mínimo 8 caracteres, al menos 1 número y 1 letra
+// Mínimo 8 caracteres
 function validarFormatoPassword(password) {
     return password.length >= 8;
 }
 
 // --- OBTENER USUARIOS DE LOCALSTORAGE ---
-// LocalStorage guarda todo como texto (string)
-// JSON.parse convierte ese texto de vuelta a un array/objeto
+// localStorage guarda todo como texto, JSON.parse lo convierte a array
 function obtenerUsuarios() {
     const datos = localStorage.getItem("acmebank_usuarios");
-    // Si no hay datos, retorna un array vacío
     return datos ? JSON.parse(datos) : [];
 }
 
 // --- GUARDAR USUARIOS EN LOCALSTORAGE ---
-// JSON.stringify convierte el array/objeto a texto
+// JSON.stringify convierte el array a texto para guardarlo
 function guardarUsuarios(usuarios) {
     localStorage.setItem("acmebank_usuarios", JSON.stringify(usuarios));
 }
 
 // --- OBTENER USUARIO LOGUEADO ---
-// Cuando el usuario inicia sesión, guardamos su ID en sessionStorage
+// Lee el ID guardado en sessionStorage y busca al usuario
 function obtenerUsuarioActual() {
     const id = sessionStorage.getItem("acmebank_sesion");
     if (!id) return null;
 
     const usuarios = obtenerUsuarios();
-    // find() busca el primer elemento que cumpla la condición
     return usuarios.find((u) => u.numId === id) || null;
 }
 
@@ -147,7 +157,7 @@ function mostrarAlerta(elementId, mensaje, tipo) {
 }
 
 // --- IMPRIMIR UNA SECCIÓN ESPECÍFICA ---
-// Crea una ventana nueva solo con el contenido a imprimir
+// Abre una ventana nueva solo con el contenido a imprimir
 function imprimirSeccion(seccionId) {
     const contenido = document.getElementById(seccionId).innerHTML;
     const ventana = window.open("", "_blank");
@@ -165,13 +175,173 @@ function imprimirSeccion(seccionId) {
                 p { margin: 8px 0; }
                 .valor-positivo { color: #16a34a; }
                 .valor-negativo { color: #dc2626; }
-                .logo-icon { display: inline-flex; width: 36px; height: 36px; background: #1a56db; color: white; border-radius: 8px; align-items: center; justify-content: center; font-weight: 700; }
+                .logo-icon { display: inline-flex; width: 36px; height: 36px; background: #1a56db;
+                    color: white; border-radius: 8px; align-items: center; justify-content: center; font-weight: 700; }
             </style>
         </head>
         <body>${contenido}</body>
         </html>
     `);
     ventana.document.close();
-    // Esperamos un momento para que carguen las fuentes
+    // Esperamos un momento para que carguen las fuentes antes de imprimir
     setTimeout(() => ventana.print(), 500);
 }
+
+// ==============================
+// TEMA CLARO / OSCURO
+// Guardamos la preferencia en localStorage
+// ==============================
+
+// Inicializar el tema al cargar la página
+// Esto lee la preferencia guardada y aplica la clase correspondiente
+function inicializarTema() {
+    const tema = localStorage.getItem("acmebank_tema") || "light";
+    // Ponemos el atributo en el <html> para que el CSS lo detecte
+    document.documentElement.setAttribute("data-theme", tema);
+    actualizarBotonTema(tema);
+}
+
+// Cambiar entre claro y oscuro al hacer clic en el botón
+function toggleTema() {
+    const temaActual = document.documentElement.getAttribute("data-theme") || "light";
+    const nuevoTema = temaActual === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", nuevoTema);
+    localStorage.setItem("acmebank_tema", nuevoTema);
+    actualizarBotonTema(nuevoTema);
+}
+
+// Actualizar el ícono del botón según el tema
+function actualizarBotonTema(tema) {
+    const btn = document.getElementById("btnTema");
+    if (!btn) return; // Si no hay botón en la página, salir
+
+    // Ícono de luna (para poner modo oscuro)
+    const iconoLuna = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>`;
+
+    // Ícono de sol (para poner modo claro)
+    const iconoSol = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>`;
+
+    // Si estamos en modo oscuro, el botón muestra el sol (para ir a claro)
+    // Si estamos en modo claro, el botón muestra la luna (para ir a oscuro)
+    btn.innerHTML = tema === "dark" ? iconoSol : iconoLuna;
+    btn.title = tema === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro";
+}
+
+// ==============================
+// EXPORTAR DATOS A JSON
+// Descarga un archivo .json con todos los usuarios
+// ==============================
+function exportarDatosJSON() {
+    const usuarios = obtenerUsuarios();
+
+    // Creamos el objeto que vamos a exportar
+    const datos = {
+        exportado: new Date().toISOString(),  // Fecha de exportación
+        version: "1.0",
+        banco: "Banco Acme",
+        usuarios: usuarios
+    };
+
+    // Convertimos el objeto a texto JSON con formato legible (null, 2 = con indentación)
+    const json = JSON.stringify(datos, null, 2);
+
+    // Creamos un "blob" (archivo en memoria) con el texto JSON
+    const blob = new Blob([json], { type: "application/json" });
+
+    // Creamos una URL temporal para el archivo
+    const url = URL.createObjectURL(blob);
+
+    // Creamos un enlace invisible y hacemos clic en él para descargar
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    // Nombre del archivo con la fecha de hoy
+    enlace.download = `banco-acme-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    enlace.click();
+
+    // Liberamos la URL temporal de la memoria
+    URL.revokeObjectURL(url);
+}
+
+// ==============================
+// IMPORTAR DATOS DESDE JSON
+// Lee un archivo .json y mezcla los usuarios con los existentes
+// Retorna una Promesa que resuelve con el número de usuarios importados
+// ==============================
+function importarDatosJSON(archivo) {
+    // Una Promesa es una forma de manejar operaciones que tardan tiempo
+    // (como leer un archivo). "resolve" = éxito, "reject" = error
+    return new Promise(function(resolve, reject) {
+        const lector = new FileReader(); // Herramienta para leer archivos
+
+        // Esta función se ejecuta cuando el archivo termina de leerse
+        lector.onload = function(evento) {
+            try {
+                // Convertimos el texto del archivo a objeto JavaScript
+                const datos = JSON.parse(evento.target.result);
+
+                // Verificamos que el archivo tenga el formato correcto
+                if (!datos.usuarios || !Array.isArray(datos.usuarios)) {
+                    reject("El archivo no tiene el formato correcto.");
+                    return;
+                }
+
+                // Obtenemos los usuarios que ya existen en el sistema
+                const usuariosActuales = obtenerUsuarios();
+                let importados = 0;
+
+                // Por cada usuario en el archivo importado...
+                datos.usuarios.forEach(function(usuarioImportado) {
+                    // Verificamos si ya existe uno con el mismo tipo e ID
+                    const yaExiste = usuariosActuales.some(function(u) {
+                        return u.tipoId === usuarioImportado.tipoId && u.numId === usuarioImportado.numId;
+                    });
+
+                    // Solo lo agregamos si NO existe ya
+                    if (!yaExiste) {
+                        usuariosActuales.push(usuarioImportado);
+                        importados++;
+                    }
+                });
+
+                // Guardamos el listado actualizado
+                guardarUsuarios(usuariosActuales);
+                resolve(importados); // Éxito: decimos cuántos se importaron
+
+            } catch (error) {
+                reject("Error al leer el archivo. Verifique que sea un JSON válido.");
+            }
+        };
+
+        // Esta función se ejecuta si hay un error al leer el archivo
+        lector.onerror = function() {
+            reject("No se pudo abrir el archivo.");
+        };
+
+        // Iniciamos la lectura del archivo como texto
+        lector.readAsText(archivo);
+    });
+}
+
+// ==============================
+// AUTO-INICIALIZAR TEMA
+// Se ejecuta automáticamente cuando la página carga
+// Evita que el usuario vea un "flash" del tema incorrecto
+// ==============================
+document.addEventListener("DOMContentLoaded", function() {
+    inicializarTema();
+});

@@ -4,12 +4,11 @@
 // ==============================
 
 // --- VERIFICAR SESIÓN ---
-// Lo primero que hacemos es verificar que haya un usuario logueado
+// Lo primero: verificar que haya un usuario logueado
 // Si no hay sesión, redirigir al login
 const usuarioActual = obtenerUsuarioActual();
 
 if (!usuarioActual) {
-    // No hay sesión activa, mandamos al login
     window.location.href = "index.html";
 }
 
@@ -19,9 +18,10 @@ if (!usuarioActual) {
 
 function inicializarDashboard() {
     // Mostrar la fecha actual en el header
-    document.getElementById("fechaActual").textContent = formatearSoloFecha(new Date().toISOString());
+    document.getElementById("fechaActual").textContent =
+        formatearSoloFecha(new Date().toISOString());
 
-    // Nombre en el sidebar
+    // Nombre en el pie del sidebar
     document.getElementById("sidebarNombre").textContent =
         `${usuarioActual.nombres} ${usuarioActual.apellidos}`;
 
@@ -30,12 +30,11 @@ function inicializarDashboard() {
 }
 
 // --- ACTUALIZAR EL RESUMEN DE CUENTA ---
-// Esta función se llama cada vez que cambia el saldo
+// Se llama cada vez que cambia el saldo
 function actualizarResumen() {
-    // Obtener datos frescos del localStorage (por si el saldo cambió)
+    // Leemos datos frescos del localStorage (por si el saldo cambió)
     const usuario = obtenerUsuarioActual();
 
-    // Resumen principal
     document.getElementById("dashNumeroCuenta").textContent = usuario.numeroCuenta;
     document.getElementById("dashSaldo").textContent = formatearMoneda(usuario.saldo);
     document.getElementById("dashTitular").textContent =
@@ -50,27 +49,30 @@ function actualizarResumen() {
 
 function navegarA(seccion) {
     // 1. Ocultar TODAS las secciones
-    // querySelectorAll selecciona todos los elementos que coincidan
     const secciones = document.querySelectorAll(".seccion");
-    secciones.forEach((s) => (s.style.display = "none"));
+    secciones.forEach(function(s) {
+        s.style.display = "none";
+    });
 
-    // 2. Quitar clase 'active' de todos los items del menú
+    // 2. Quitar clase 'active' de todos los ítems del menú
     const navItems = document.querySelectorAll(".nav-item");
-    navItems.forEach((item) => item.classList.remove("active"));
+    navItems.forEach(function(item) {
+        item.classList.remove("active");
+    });
 
-    // 3. Mostrar la sección seleccionada
+    // 3. Mostrar la sección que nos pidieron
     const seccionElement = document.getElementById(`seccion-${seccion}`);
     if (seccionElement) {
         seccionElement.style.display = "block";
     }
 
-    // 4. Marcar como activo el item del menú
+    // 4. Marcar como activo el ítem del menú correspondiente
     const navActivo = document.getElementById(`nav-${seccion}`);
     if (navActivo) {
         navActivo.classList.add("active");
     }
 
-    // 5. Actualizar título
+    // 5. Actualizar el título del header
     const titulos = {
         resumen: "Resumen de Cuenta",
         transacciones: "Resumen de Transacciones",
@@ -124,7 +126,7 @@ function navegarA(seccion) {
             break;
     }
 
-    // Cerrar sidebar en móvil
+    // Cerrar el sidebar en móvil al navegar
     document.getElementById("sidebar").classList.remove("open");
 }
 
@@ -137,7 +139,7 @@ function cargarTransacciones() {
     const tbody = document.getElementById("tablaTransacciones");
     const sinTrans = document.getElementById("sinTransacciones");
 
-    // Limpiar tabla
+    // Limpiar la tabla antes de llenarla
     tbody.innerHTML = "";
 
     if (usuario.transacciones.length === 0) {
@@ -147,21 +149,17 @@ function cargarTransacciones() {
 
     sinTrans.style.display = "none";
 
-    // Obtener las últimas 10 transacciones
-    // slice(-10) toma los últimos 10 elementos
-    // reverse() los pone de más reciente a más antiguo
+    // slice(-10) = los últimos 10 elementos del array
+    // reverse() = del más reciente al más antiguo
     const ultimas10 = usuario.transacciones.slice(-10).reverse();
 
-    // Crear una fila por cada transacción
-    ultimas10.forEach((trans) => {
+    ultimas10.forEach(function(trans) {
         const fila = document.createElement("tr");
 
-        // Determinar si es positivo (consignación) o negativo (retiro/pago)
         const esPositivo = trans.tipo === "Consignación";
         const claseValor = esPositivo ? "valor-positivo" : "valor-negativo";
         const signo = esPositivo ? "+" : "-";
 
-        // innerHTML nos permite insertar HTML directamente
         fila.innerHTML = `
             <td>${formatearFecha(trans.fecha)}</td>
             <td>${trans.referencia}</td>
@@ -179,18 +177,18 @@ function cargarTransacciones() {
 // ==============================
 
 function realizarConsignacion() {
-    // 1. Validar monto
     const montoInput = document.getElementById("montoConsignacion");
     const errorEl = document.getElementById("errConsignacion");
     const monto = parseFloat(montoInput.value);
 
+    // Validar que el monto sea un número válido y mayor a 0
     if (!monto || monto <= 0) {
         errorEl.textContent = "Ingrese un monto válido mayor a 0";
         return;
     }
     errorEl.textContent = "";
 
-    // 2. Crear el registro de la transacción
+    // Crear el objeto de la transacción
     const transaccion = {
         fecha: new Date().toISOString(),
         referencia: generarReferencia(),
@@ -199,28 +197,30 @@ function realizarConsignacion() {
         valor: monto,
     };
 
-    // 3. Actualizar saldo y agregar transacción
+    // Actualizar el saldo y guardar la transacción en localStorage
     const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex((u) => u.numId === usuarioActual.numId);
+    // findIndex() retorna la posición del usuario en el array
+    const indice = usuarios.findIndex(function(u) {
+        return u.numId === usuarioActual.numId;
+    });
 
-    // findIndex retorna la posición del usuario en el array
-    usuarios[indice].saldo += monto; // Sumar al saldo
+    usuarios[indice].saldo += monto;
     usuarios[indice].transacciones.push(transaccion);
     guardarUsuarios(usuarios);
 
-    // 4. Mostrar resumen
+    // Mostrar el resumen de la transacción (sin emojis)
     document.getElementById("resumenConsignacionContent").innerHTML = `
-        <h3>✅ Consignación Exitosa</h3>
+        <h3 class="success-title">Consignacion Exitosa</h3>
         <p><strong>Fecha:</strong> ${formatearFecha(transaccion.fecha)}</p>
         <p><strong>Referencia:</strong> ${transaccion.referencia}</p>
         <p><strong>Tipo:</strong> ${transaccion.tipo}</p>
         <p><strong>Concepto:</strong> ${transaccion.concepto}</p>
-        <p><strong>Valor:</strong> ${formatearMoneda(transaccion.valor)}</p>
+        <p><strong>Valor consignado:</strong> ${formatearMoneda(transaccion.valor)}</p>
         <p><strong>Nuevo saldo:</strong> ${formatearMoneda(usuarios[indice].saldo)}</p>
     `;
     document.getElementById("resumenConsignacion").style.display = "block";
 
-    // 5. Limpiar input
+    // Limpiar el campo del monto
     montoInput.value = "";
 }
 
@@ -240,7 +240,9 @@ function realizarRetiro() {
 
     // Verificar que tenga saldo suficiente
     const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex((u) => u.numId === usuarioActual.numId);
+    const indice = usuarios.findIndex(function(u) {
+        return u.numId === usuarioActual.numId;
+    });
 
     if (monto > usuarios[indice].saldo) {
         errorEl.textContent = "Saldo insuficiente para realizar el retiro";
@@ -256,22 +258,22 @@ function realizarRetiro() {
         valor: monto,
     };
 
-    usuarios[indice].saldo -= monto; // Restar del saldo
+    usuarios[indice].saldo -= monto;
     usuarios[indice].transacciones.push(transaccion);
     guardarUsuarios(usuarios);
 
     document.getElementById("resumenRetiroContent").innerHTML = `
-        <h3>✅ Retiro Exitoso</h3>
+        <h3 class="success-title">Retiro Exitoso</h3>
         <p><strong>Fecha:</strong> ${formatearFecha(transaccion.fecha)}</p>
         <p><strong>Referencia:</strong> ${transaccion.referencia}</p>
         <p><strong>Tipo:</strong> ${transaccion.tipo}</p>
         <p><strong>Concepto:</strong> ${transaccion.concepto}</p>
-        <p><strong>Valor:</strong> ${formatearMoneda(transaccion.valor)}</p>
+        <p><strong>Valor retirado:</strong> ${formatearMoneda(transaccion.valor)}</p>
         <p><strong>Nuevo saldo:</strong> ${formatearMoneda(usuarios[indice].saldo)}</p>
     `;
     document.getElementById("resumenRetiro").style.display = "block";
 
-    // Actualizar saldo mostrado
+    // Actualizar el saldo mostrado en el formulario
     document.getElementById("retiroSaldo").textContent = formatearMoneda(usuarios[indice].saldo);
     montoInput.value = "";
 }
@@ -312,9 +314,11 @@ function pagarServicio() {
 
     if (!esValido) return;
 
-    // Verificar saldo
+    // Verificar saldo disponible
     const usuarios = obtenerUsuarios();
-    const indice = usuarios.findIndex((u) => u.numId === usuarioActual.numId);
+    const indice = usuarios.findIndex(function(u) {
+        return u.numId === usuarioActual.numId;
+    });
 
     if (monto > usuarios[indice].saldo) {
         document.getElementById("errMontoServicio").textContent = "Saldo insuficiente";
@@ -325,7 +329,7 @@ function pagarServicio() {
         fecha: new Date().toISOString(),
         referencia: generarReferencia(),
         tipo: "Retiro",
-        concepto: `Pago de servicio público ${servicio}`,
+        concepto: `Pago de servicio público: ${servicio}`,
         valor: monto,
     };
 
@@ -334,18 +338,20 @@ function pagarServicio() {
     guardarUsuarios(usuarios);
 
     document.getElementById("resumenServicioContent").innerHTML = `
-        <h3>✅ Pago Exitoso</h3>
+        <h3 class="success-title">Pago Exitoso</h3>
         <p><strong>Fecha:</strong> ${formatearFecha(transaccion.fecha)}</p>
         <p><strong>Referencia:</strong> ${transaccion.referencia}</p>
-        <p><strong>Tipo:</strong> ${transaccion.tipo}</p>
-        <p><strong>Concepto:</strong> ${transaccion.concepto}</p>
+        <p><strong>Servicio:</strong> ${servicio}</p>
         <p><strong>Ref. de pago:</strong> ${referenciaPago}</p>
-        <p><strong>Valor:</strong> ${formatearMoneda(transaccion.valor)}</p>
+        <p><strong>Valor pagado:</strong> ${formatearMoneda(transaccion.valor)}</p>
         <p><strong>Nuevo saldo:</strong> ${formatearMoneda(usuarios[indice].saldo)}</p>
     `;
     document.getElementById("resumenServicio").style.display = "block";
 
+    // Actualizar saldo mostrado
     document.getElementById("servicioSaldo").textContent = formatearMoneda(usuarios[indice].saldo);
+
+    // Limpiar los campos
     document.getElementById("tipoServicio").value = "";
     document.getElementById("referenciaServicio").value = "";
     document.getElementById("montoServicio").value = "";
@@ -368,7 +374,8 @@ function generarCertificado() {
         `Fecha de expedición: ${formatearSoloFecha(new Date().toISOString())}`;
     document.getElementById("certTitular").textContent =
         `${usuario.nombres} ${usuario.apellidos}`;
-    document.getElementById("certTipoId").textContent = tiposId[usuario.tipoId] || usuario.tipoId;
+    document.getElementById("certTipoId").textContent =
+        tiposId[usuario.tipoId] || usuario.tipoId;
     document.getElementById("certNumId").textContent = usuario.numId;
     document.getElementById("certNumeroCuenta").textContent = usuario.numeroCuenta;
     document.getElementById("certFechaApertura").textContent =
@@ -376,26 +383,51 @@ function generarCertificado() {
 }
 
 // ==============================
+// IMPORTAR JSON (maneja el input de archivo)
+// Se llama cuando el usuario selecciona un archivo .json
+// ==============================
+
+function manejarImportacion(inputEl) {
+    const archivo = inputEl.files[0]; // files[0] = el primer archivo seleccionado
+
+    // Si no seleccionó ningún archivo, salir
+    if (!archivo) return;
+
+    // Llamamos a importarDatosJSON() (definida en utils.js)
+    // Como retorna una Promesa, usamos .then() para el éxito y .catch() para el error
+    importarDatosJSON(archivo)
+        .then(function(importados) {
+            alert(`Importación completada: ${importados} usuario(s) nuevos importados.`);
+        })
+        .catch(function(error) {
+            alert(`Error al importar: ${error}`);
+        });
+
+    // Limpiar el input para que el usuario pueda importar otro archivo si quiere
+    inputEl.value = "";
+}
+
+// ==============================
 // CERRAR SESIÓN
 // ==============================
 
 function cerrarSesion() {
-    // Eliminar la sesión del sessionStorage
+    // Eliminamos la sesión del sessionStorage
     sessionStorage.removeItem("acmebank_sesion");
     // Redirigir al login
     window.location.href = "index.html";
 }
 
 // ==============================
-// SIDEBAR RESPONSIVE (MÓVIL)
+// SIDEBAR EN MÓVIL
 // ==============================
 
 function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("open");
 }
 
-// Cerrar sidebar al hacer clic fuera (en móvil)
-document.getElementById("mainContent").addEventListener("click", function () {
+// Cerrar sidebar al hacer clic en el contenido principal (móvil)
+document.getElementById("mainContent").addEventListener("click", function() {
     document.getElementById("sidebar").classList.remove("open");
 });
 

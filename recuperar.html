@@ -4,14 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banco Acme - Recuperar Contraseña</title>
+
+    <!-- Aplicar tema guardado antes de mostrar la página -->
+    <script>
+        var temaGuardado = localStorage.getItem("acmebank_tema");
+        if (temaGuardado === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="page-auth">
 
+    <!-- Botón para cambiar entre modo claro y oscuro -->
+    <button class="theme-toggle" id="btnTema" onclick="toggleTema()" title="Cambiar tema"></button>
+
     <div class="auth-container">
         <div class="auth-card">
+
             <div class="auth-header">
                 <div class="logo">
                     <div class="logo-icon">A</div>
@@ -20,8 +33,12 @@
                 <p class="auth-subtitle">Recuperar contraseña</p>
             </div>
 
-            <!-- Paso 1: Verificar identidad -->
+            <!-- PASO 1: Verificar identidad -->
             <div id="formVerificar">
+                <p class="info-text" style="text-align:left; padding: 0 0 16px 0; color: var(--text-label);">
+                    Ingrese sus datos para verificar su identidad.
+                </p>
+
                 <div class="form-group">
                     <label for="recTipoId">Tipo de Identificación</label>
                     <select id="recTipoId" required>
@@ -41,7 +58,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="recEmail">Correo Electrónico</label>
+                    <label for="recEmail">Correo Electrónico registrado</label>
                     <input type="email" id="recEmail" placeholder="correo@ejemplo.com">
                     <span class="error-msg" id="errRecEmail"></span>
                 </div>
@@ -54,15 +71,23 @@
                 <div id="mensajeVerificar" class="alert alert-error" style="display:none;"></div>
             </div>
 
-            <!-- Paso 2: Nueva contraseña (oculto por defecto) -->
+            <!-- PASO 2: Nueva contraseña (oculto hasta que se verifique la identidad) -->
             <div id="formNuevaPass" style="display:none;">
-                <p class="info-text">Identidad verificada. Ingrese su nueva contraseña.</p>
+                <p class="info-text" style="text-align:left; padding: 0 0 20px 0; color: var(--verde);">
+                    Identidad verificada. Ingrese su nueva contraseña.
+                </p>
 
                 <div class="form-group">
                     <label for="nuevaPass">Nueva Contraseña</label>
                     <div class="password-wrapper">
                         <input type="password" id="nuevaPass" placeholder="Mínimo 8 caracteres">
-                        <button type="button" class="toggle-pass" onclick="togglePassword('nuevaPass', this)">👁</button>
+                        <button type="button" class="toggle-pass" onclick="togglePassword('nuevaPass', this)" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
                     </div>
                     <span class="error-msg" id="errNuevaPass"></span>
                 </div>
@@ -71,7 +96,13 @@
                     <label for="confirmarNuevaPass">Confirmar Contraseña</label>
                     <div class="password-wrapper">
                         <input type="password" id="confirmarNuevaPass" placeholder="Repita la contraseña">
-                        <button type="button" class="toggle-pass" onclick="togglePassword('confirmarNuevaPass', this)">👁</button>
+                        <button type="button" class="toggle-pass" onclick="togglePassword('confirmarNuevaPass', this)" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
                     </div>
                     <span class="error-msg" id="errConfirmarNuevaPass"></span>
                 </div>
@@ -80,6 +111,7 @@
 
                 <div id="mensajeCambio" class="alert" style="display:none;"></div>
             </div>
+
         </div>
     </div>
 

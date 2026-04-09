@@ -4,17 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banco Acme - Inicio de Sesión</title>
+
+    <!-- Aplicar el tema ANTES de que se muestre la página,
+         para evitar que el usuario vea un "parpadeo" de colores incorrectos -->
+    <script>
+        var temaGuardado = localStorage.getItem("acmebank_tema");
+        if (temaGuardado === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="page-auth">
 
+    <!-- Botón para cambiar entre modo claro y oscuro -->
+    <button class="theme-toggle" id="btnTema" onclick="toggleTema()" title="Cambiar tema"></button>
+
     <!-- ==============================
          PÁGINA DE INICIO DE SESIÓN
     ============================== -->
     <div class="auth-container">
         <div class="auth-card">
+
             <!-- Logo y título -->
             <div class="auth-header">
                 <div class="logo">
@@ -48,14 +62,21 @@
                     <label for="password">Contraseña</label>
                     <div class="password-wrapper">
                         <input type="password" id="password" placeholder="Ingrese su contraseña" required>
-                        <button type="button" class="toggle-pass" onclick="togglePassword('password', this)">👁</button>
+                        <!-- El botón del ojo, el ícono SVG lo pone utils.js al hacer clic -->
+                        <button type="button" class="toggle-pass" onclick="togglePassword('password', this)" aria-label="Mostrar contraseña">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
                     </div>
                     <span class="error-msg" id="errorPassword"></span>
                 </div>
 
                 <button class="btn btn-primary" onclick="iniciarSesion()">Iniciar Sesión</button>
 
-                <!-- Mensaje de error general -->
+                <!-- Mensaje de error general (se muestra si el usuario no existe) -->
                 <div id="mensajeError" class="alert alert-error" style="display:none;"></div>
 
                 <div class="auth-links">
@@ -63,6 +84,7 @@
                     <a href="recuperar.html">¿Olvidaste tu contraseña?</a>
                 </div>
             </div>
+
         </div>
     </div>
 
