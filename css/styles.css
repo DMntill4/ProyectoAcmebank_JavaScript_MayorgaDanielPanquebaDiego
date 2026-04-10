@@ -70,6 +70,11 @@
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* solucion al problema del responsive arreglado */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
 body {
     font-family: 'DM Sans', sans-serif;
@@ -1159,6 +1164,27 @@ h1, h2, h3 {
    RESPONSIVE
    ============================== */
 @media (max-width: 768px) {
+
+    /* Asegura que el body no tenga overflow horizontal */
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .page-auth {
+        overflow-x: hidden;
+    }
+
+    /* Fix: evitar scroll horizontal por el botón de tema */
+    .page-auth .theme-toggle {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        width: 36px;
+        height: 36px;
+    }
+
+
     /* ── Auth ── */
     .auth-container {
         max-width: 100%;
