@@ -7,7 +7,7 @@ Aplicación web del Banco Acme para la autogestión de cuentas bancarias. Desarr
 
 1. Clonar el repositorio:
 ```bash
-git clone https://github.com/tu-usuario/ProyectoAcmebank_JavaScript_ApellidoNombre.git
+git clone https://github.com/DMntill4/ProyectoAcmebank_JavaScript_MayorgaDanielPanquebaDiego.git
 ```
 
 2. Abrir el proyecto con **Live Server** en VS Code:
