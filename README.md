@@ -5,7 +5,7 @@ Aplicación web del Banco Acme para la autogestión de cuentas bancarias. Desarr
 
 ## Instrucciones de instalación y ejecución
 
-1. Clonar el repositorio:
+1. Clonar el repositorio :D
 ```bash
 git clone https://github.com/DMntill4/ProyectoAcmebank_JavaScript_MayorgaDanielPanquebaDiego.git
 ```
@@ -89,7 +89,7 @@ ProyectoAcmebank_JavaScript/
   "acmebank_usuarios": [
     {
       "tipoId": "CC",
-      "numId": "1234567890",
+      "numId": "0987654321",
       "nombres": "Daniel",
       "apellidos": "Mayorga",
       "genero": "M",
@@ -107,10 +107,12 @@ ProyectoAcmebank_JavaScript/
           "referencia": "REF-A3B7C2D1",
           "tipo": "Consignación",
           "concepto": "Consignación por canal electrónico",
-          "valor": 50000
+          "valor": 500000
         }
       ]
     }
   ]
 }
 ```
+
+

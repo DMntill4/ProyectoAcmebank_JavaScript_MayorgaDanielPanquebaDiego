@@ -92,6 +92,7 @@ function cargarTransacciones() {
     const usuario = obtenerUsuarioActual();
     const tbody = document.getElementById("tablaTransacciones");
     const sinTrans = document.getElementById("sinTransacciones");
+    
 
     tbody.innerHTML = ""; // Limpia filas anteriores antes de volver a pintar
 
@@ -106,6 +107,7 @@ function cargarTransacciones() {
     const ultimas10 = usuario.transacciones.slice(-10).reverse();
     ultimas10.forEach(function(trans) {
         const fila = document.createElement("tr");
+        const mes = document.getElementById("dashSaldo").textContent = formatearMoneda(usuario.saldo);
         const esPositivo = trans.tipo === "Consignación";
         const claseValor = esPositivo ? "valor-positivo" : "valor-negativo";
         const signo = esPositivo ? "+" : "-";
@@ -116,6 +118,8 @@ function cargarTransacciones() {
             <td>${trans.tipo}</td>
             <td>${trans.concepto}</td>
             <td class="${claseValor}">${signo} ${formatearMoneda(trans.valor)}</td>
+            <td class="${claseValor}">${signo} ${formatearMoneda(mes)}</td>
+
         `;
         tbody.appendChild(fila);
     });
